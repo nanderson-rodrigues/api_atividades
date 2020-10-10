@@ -65,7 +65,7 @@ class Atividade(Resource):
         print(pessoa)
         atividades = Atividades.query.filter_by(pessoa_id=pessoa.id)
         try :
-            response = [{'pessoa': atividade.pessoa.nome, 'nome': atividade.nome, 'id': atividade.id}  for atividade in atividades]
+            response = [{'pessoa': atividade.pessoa.nome, 'nome': atividade.nome, 'id': atividade.id, 'status': atividade.status}  for atividade in atividades]
         except Exception:
             response = {'status': 'Erro', 'mensagem': 'Erro ao tentar recuperar as atividades vinculadas a pessoa informada!'}
 
@@ -75,7 +75,7 @@ class Atividade(Resource):
 class ListaAtividades(Resource):
     def get(self):
         atividades = Atividades.query.all()
-        response = [{'id' : i.id, 'nome': i.nome, 'pessoa': i.pessoa.nome} for i in atividades]
+        response = [{'id' : i.id, 'nome': i.nome, 'pessoa': i.pessoa.nome, "status": i.status} for i in atividades]
         return response
 
     def post(self):
@@ -86,7 +86,8 @@ class ListaAtividades(Resource):
         response = {
             'pessoa': atividade.pessoa.nome,
             'nome': atividade.nome,
-            'id': atividade.id
+            'id': atividade.id,
+            'status': atividade.status
         }
         return response
 

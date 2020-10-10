@@ -31,6 +31,7 @@ class Atividades(Base):
 
     id = Column(Integer, primary_key=True)
     nome = Column(String(80))
+    status = Column(String(9))
     pessoa_id = Column(Integer, ForeignKey('pessoas.id'))
     pessoa = relationship("Pessoas")
 
