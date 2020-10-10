@@ -60,14 +60,33 @@ class ListaPessoas(Resource):
         return response
 
 class Atividade(Resource):
-    def get(self, nome):
-        pessoa = Pessoas.query.filter_by(nome=nome).first()
+    def get(self, nome_pessoa):
+        pessoa = Pessoas.query.filter_by(nome=nome_pessoa).first()
         print(pessoa)
         atividades = Atividades.query.filter_by(pessoa_id=pessoa.id)
         try :
             response = [{'pessoa': atividade.pessoa.nome, 'nome': atividade.nome, 'id': atividade.id, 'status': atividade.status}  for atividade in atividades]
         except Exception:
             response = {'status': 'Erro', 'mensagem': 'Erro ao tentar recuperar as atividades vinculadas a pessoa informada!'}
+
+        return response
+
+class AtividadeStatus(Resource):
+    def get(self, id_atividade):
+        atividade = Atividades.query.filter_by(id=id_atividade).first()
+        try:
+            response = {'status': atividade.status}
+        except Exception:
+            response = {'status': 'Erro', 'mensagem': 'Erro ao tentar recuperar status da atividade!'}
+        return response
+
+    def put(self, id_atividade):
+        dados = request.json
+        atividade = Atividades.query.filter_by(id=id_atividade).first()
+        if 'status' in dados:
+            atividade.status = dados['status']
+        atividade.save()
+        response = { 'status': atividade.status}
 
         return response
 
@@ -94,6 +113,7 @@ class ListaAtividades(Resource):
 api.add_resource(Pessoa, '/pessoa/<int:id>/')
 api.add_resource(ListaPessoas, '/pessoa/')
 api.add_resource(Atividade, '/atividades/<string:nome>/')
+api.add_resource(AtividadeStatus, '/atividades/<int:id_atividade>/')
 api.add_resource(ListaAtividades, '/atividades/')
 
 if __name__ == '__main__':
