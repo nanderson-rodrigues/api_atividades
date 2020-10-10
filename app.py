@@ -59,6 +59,19 @@ class ListaPessoas(Resource):
         }
         return response
 
+class Atividade(Resource):
+    def get(self, nome):
+        pessoa = Pessoas.query.filter_by(nome=nome).first()
+        print(pessoa)
+        atividades = Atividades.query.filter_by(pessoa_id=pessoa.id)
+        try :
+            response = [{'pessoa': atividade.pessoa.nome, 'nome': atividade.nome, 'id': atividade.id}  for atividade in atividades]
+        except Exception:
+            response = {'status': 'Erro', 'mensagem': 'Erro ao tentar recuperar as atividades vinculadas a pessoa informada!'}
+
+        return response
+
+
 class ListaAtividades(Resource):
     def get(self):
         atividades = Atividades.query.all()
@@ -79,6 +92,7 @@ class ListaAtividades(Resource):
 
 api.add_resource(Pessoa, '/pessoa/<int:id>/')
 api.add_resource(ListaPessoas, '/pessoa/')
+api.add_resource(Atividade, '/atividades/<string:nome>/')
 api.add_resource(ListaAtividades, '/atividades/')
 
 if __name__ == '__main__':

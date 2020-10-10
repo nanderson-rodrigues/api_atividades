@@ -1,4 +1,5 @@
-from models import Pessoas
+from models import Pessoas, Atividades
+
 
 def insere_pessoas():
     pessoa = Pessoas(nome="Nanderson", idade=23)
