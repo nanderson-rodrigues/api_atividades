@@ -1,4 +1,4 @@
-from models import Pessoas, Atividades
+from models import Pessoas, Atividades, Usuarios
 
 def insere_atividade(nome, status, pessoa_id):
     atividade = Atividades(nome=nome, status=status, pessoa_id=pessoa_id)
@@ -46,11 +46,26 @@ def exclui_pessoa(nome):
     print(pessoa)
     pessoa.delete()
 
+#------------------------
+
+def insere_usuario(login, senha):
+    usuario = Usuarios(login=login, senha=senha)
+    print(usuario)
+    usuario.save()
+
+def consulta_usuarios():
+    usuario = Usuarios.query.all()
+    print(usuario)
+
 if __name__ == '__main__':
+    #insere_usuario('nanderson', '123')
+    #insere_usuario('maria', '456')
+    consulta_usuarios()
+
     #exclui_pessoa("Maheus")
     #insere_pessoa("Matheus", 15)
     #altera_pessoa()
-    consulta_pessoas()
+    #consulta_pessoas()
 
     #exclui_atividade(1)
     #insere_atividade("Desenvolver o Back-end", "concluido", 3)
